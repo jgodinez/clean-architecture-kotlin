@@ -1,3 +1,4 @@
 <resources>
     <string name="force_crash_text">Force crash</string>
+    <string name="remote_config_value">Get remote config value</string>
 </resources>

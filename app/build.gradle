@@ -51,11 +51,17 @@ android {
             debuggable = false
 //            versionNameSuffix "-[RC]"
         }
+        staging {
+            signingConfig signingConfigs.debug
+            debuggable = true
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-[S]"
+        }
         debug {
             signingConfig signingConfigs.debug
             debuggable = true
             applicationIdSuffix ".debug"
-//            versionNameSuffix "-[Q]"
+            versionNameSuffix "-[Q]"
         }
     }
 
@@ -87,6 +93,8 @@ android {
 
             if (variant.buildType.name == "debug") {
                 appName = "[Q] " + flavorData.appName
+            } else if (variant.buildType.name == "staging") {
+                appName = "[S] " + flavorData.appName
             }
 
             logVariant(variant, "════════════════════════════════════════════════")
@@ -96,14 +104,14 @@ android {
 
             setVariantResValue(variant, "string", "app_name", appName)
             setVariantBuildConfigField(variant, "String", "host", flavorData.host)
+            setVariantBuildConfigField(variant, "String", "api_key", flavorData.api_key)
+            setVariantBuildConfigField(variant, "String", "android_id", flavorData.android_id)
         }
 
         variant.outputs.all {
             outputFileName = "${variant.name}.v${variant.versionCode}~${variant.versionName}.apk"
             logVariant(variant, "$outputFileName")
         }
-
-//        logVariant(variant, "════════════════════════════════════════════════")
     }
 }
 
@@ -114,8 +122,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation 'com.google.firebase:firebase-analytics:17.4.2'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation 'com.google.firebase:firebase-config:19.1.4'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
